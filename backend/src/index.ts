@@ -5,19 +5,23 @@ import { env } from "hono/adapter";
 
 const app = new Hono();
 
-app.get("/", async (c) => {
-  const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c);
-  const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL }).$extends(
-    withAccelerate()
-  );
-  const res = await prisma.user.create({
-    data: {
-      email: "temp@gmail.com",
-      name: "temp",
-      password: "tempp",
-    },
-  });
-  console.log("DONNENNENE", res, DATABASE_URL);
+app.post("/api/v1/user/signup", (c) => {
+  return c.text("signup route");
+});
+app.post("/api/v1/user/signin", (c) => {
+  return c.text("signin route");
+});
+app.post("/api/v1/blog/", (c) => {
+  return c.text("signup route");
+});
+app.put("/api/v1/blog/", (c) => {
+  return c.text("signup route");
+});
+app.get("/api/v1/blog/bulk", (c) => {
+  return c.text("blog bulk route");
+});
+app.get("/api/v1/blog/:id", (c) => {
+  return c.text("bog id route");
 });
 
 export default app;
