@@ -17,7 +17,7 @@ const authMiddleware = createMiddleware(async (c, next) => {
     const token = authHeader.split(" ")[1];
     const { JWT_SECRET } = env<{ JWT_SECRET: string }>(c);
     const { id } = await verify(token, JWT_SECRET);
-    c.set("id", id);
+    c.set("userId", id);
     await next();
   } catch (error) {
     console.log(error);
