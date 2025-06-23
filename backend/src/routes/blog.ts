@@ -1,23 +1,97 @@
 import { Hono } from "hono";
 import { authMiddleware } from "../middlewares/authMiddleware";
+import { PrismaClient } from "@prisma/client/edge";
+import { env } from "hono/adapter";
+import { withAccelerate } from "@prisma/extension-accelerate";
 
-export const blogRouter = new Hono();
+type Variables = {
+  userId: string;
+};
+
+export const blogRouter = new Hono<{
+  Variables: Variables;
+  Bindings: { DATABASE_URL: string };
+}>();
 
 //can also write blogRouter.use("/*", authM<iddleware)
 blogRouter.use(authMiddleware);
 
-blogRouter.post("/", (c) => {
-  return c.text("blog post");
+blogRouter.post("/", async (c) => {
+  try {
+    console.log("CAMME");
+    const { DATABASE_URL } = env(c);
+    const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL });
+    const { title, content } = await c.req.json();
+    const userId = c.get("userId");
+    const blog = await prisma.blog.create({
+      data: {
+        authorId: userId,
+        title,
+        content,
+      },
+    });
+    return c.json({ msg: "Blog post created" });
+  } catch (error) {
+    console.log(error);
+    return c.json({ msg: "Error in post route of blog" }, 404);
+  }
 });
 
-blogRouter.put("/", (c) => {
-  return c.text("blog put");
+blogRouter.put("/", async (c) => {
+  try {
+    const { DATABASE_URL } = env(c);
+    const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL }).$extends(
+      withAccelerate()
+    );
+    const body = await c.req.json();
+    const userId = c.get("userId");
+    const blog = await prisma.blog.update({
+      where: { id: body.id, authorId: userId },
+      data: {
+        title: body.title,
+        content: body.content,
+      },
+    });
+
+    return c.json({ msg: "Updated the blog successfully" });
+  } catch (error) {
+    console.log(error);
+    return c.json({ msg: "Error in put/update route of blog" }, 404);
+  }
 });
 
-blogRouter.get("/bulk", (c) => {
-  return c.text("blog bulk route");
+blogRouter.get("/bulk", async (c) => {
+  try {
+    const { DATABASE_URL } = env(c);
+    const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL }).$extends(
+      withAccelerate()
+    );
+    const blogs = await prisma.blog.findMany();
+
+    return c.json({ msg: "Fetched all the blogs successfully", blogs });
+  } catch (error) {
+    console.log(error);
+    return c.json({ msg: "Error in put/update route of blog" }, 404);
+  }
 });
 
-blogRouter.get("/:id", (c) => {
-  return c.text("bog id route");
+blogRouter.get("/:id", async (c) => {
+  try {
+    const blogId = c.req.param("id");
+    const { DATABASE_URL } = env(c);
+    const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL }).$extends(
+      withAccelerate()
+    );
+    const blog = await prisma.blog.findUnique({ where: { id: blogId } });
+
+    if (!blog) return c.json({ msg: "Couldnt find blog" }, 404);
+
+    return c.json({ msg: "Retrieved the specific blog", blog });
+  } catch (error) {
+    console.log(error);
+    return c.json(
+      { msg: "Error occured in getting blog for specific id" },
+      404
+    );
+  }
 });
