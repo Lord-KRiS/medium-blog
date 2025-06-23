@@ -3,6 +3,7 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 import { PrismaClient } from "@prisma/client/edge";
 import { env } from "hono/adapter";
 import { withAccelerate } from "@prisma/extension-accelerate";
+import { createBlogInput, updateBlogInput } from "@lordkris/medium-common";
 
 type Variables = {
   userId: string;
@@ -18,10 +19,15 @@ blogRouter.use(authMiddleware);
 
 blogRouter.post("/", async (c) => {
   try {
-    console.log("CAMME");
+    const body = await c.req.json();
+    const parsedResponse = createBlogInput.safeParse(body);
+    if (!parsedResponse.success) {
+      return c.json({ msg: "Error in given inputs" }, 411);
+    }
+
     const { DATABASE_URL } = env(c);
     const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL });
-    const { title, content } = await c.req.json();
+    const { title, content } = body;
     const userId = c.get("userId");
     const blog = await prisma.blog.create({
       data: {
@@ -39,11 +45,16 @@ blogRouter.post("/", async (c) => {
 
 blogRouter.put("/", async (c) => {
   try {
+    const body = await c.req.json();
+    const parsedResponse = updateBlogInput.safeParse(body);
+    if (!parsedResponse.success) {
+      return c.json({ msg: "Error in given inputs" }, 411);
+    }
+
     const { DATABASE_URL } = env(c);
     const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL }).$extends(
       withAccelerate()
     );
-    const body = await c.req.json();
     const userId = c.get("userId");
     const blog = await prisma.blog.update({
       where: { id: body.id, authorId: userId },

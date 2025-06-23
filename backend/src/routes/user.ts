@@ -3,7 +3,7 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { sign } from "hono/jwt";
-import { Bindings } from "hono/types";
+import { signinInput, signupInput } from "@lordkris/medium-common";
 
 export const userRouter = new Hono<{
   Bindings: {
@@ -14,11 +14,16 @@ export const userRouter = new Hono<{
 
 userRouter.post("/signup", async (c) => {
   try {
+    const body = await c.req.json();
+    const parsedResponse = signupInput.safeParse(body);
+    if (!parsedResponse.success) {
+      return c.json({ msg: "Error in given inputs" }, 411);
+    }
+
     const { DATABASE_URL, JWT_SECRET } = env(c);
     const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL }).$extends(
       withAccelerate()
     );
-    const body = await c.req.json();
     const user = await prisma.user.create({
       data: {
         email: body.email,
@@ -38,11 +43,16 @@ userRouter.post("/signup", async (c) => {
 
 userRouter.post("/signin", async (c) => {
   try {
+    const body = await c.req.json();
+    const parsedResponse = signinInput.safeParse(body);
+    if (!parsedResponse.success) {
+      return c.json({ msg: "Error in given inputs" }, 411);
+    }
+
     const { DATABASE_URL, JWT_SECRET } = env(c);
     const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL }).$extends(
       withAccelerate()
     );
-    const body = await c.req.json();
     const user = await prisma.user.findUnique({
       where: {
         email: body.email,
