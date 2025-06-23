@@ -32,7 +32,7 @@ userRouter.post("/signup", async (c) => {
     return c.json({ token });
   } catch (error) {
     console.log(error);
-    return c.json({ msg: "ERROR in signup" }, 500);
+    return c.json({ msg: "ERROR in signup", error }, 500);
   }
 });
 
@@ -58,6 +58,6 @@ userRouter.post("/signin", async (c) => {
     return c.json({ token });
   } catch (error) {
     console.log(error);
-    return c.json({ msg: "ERROR in signin" }, 500);
+    return c.json({ msg: "ERROR in signin", error }, 500);
   }
 });

@@ -16,6 +16,6 @@ export const authMiddleware = createMiddleware(async (c, next) => {
     await next();
   } catch (error) {
     console.log(error);
-    return c.json({ msg: "error in middleware" });
+    return c.json({ msg: "error in middleware", error });
   }
 });

@@ -33,7 +33,7 @@ blogRouter.post("/", async (c) => {
     return c.json({ msg: "Blog post created" });
   } catch (error) {
     console.log(error);
-    return c.json({ msg: "Error in post route of blog" }, 404);
+    return c.json({ msg: "Error in post route of blog", error }, 404);
   }
 });
 
@@ -56,7 +56,7 @@ blogRouter.put("/", async (c) => {
     return c.json({ msg: "Updated the blog successfully" });
   } catch (error) {
     console.log(error);
-    return c.json({ msg: "Error in put/update route of blog" }, 404);
+    return c.json({ msg: "Error in put/update route of blog", error }, 404);
   }
 });
 
@@ -71,7 +71,7 @@ blogRouter.get("/bulk", async (c) => {
     return c.json({ msg: "Fetched all the blogs successfully", blogs });
   } catch (error) {
     console.log(error);
-    return c.json({ msg: "Error in put/update route of blog" }, 404);
+    return c.json({ msg: "Error in put/update route of blog", error }, 404);
   }
 });
 
@@ -90,7 +90,7 @@ blogRouter.get("/:id", async (c) => {
   } catch (error) {
     console.log(error);
     return c.json(
-      { msg: "Error occured in getting blog for specific id" },
+      { msg: "Error occured in getting blog for specific id", error },
       404
     );
   }
