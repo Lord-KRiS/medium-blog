@@ -1,0 +1,27 @@
+import React from "react";
+import Avatar from "./Avatar";
+import { useNavigate } from "react-router-dom";
+
+function Appbar() {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    localStorage.removeItem("token");
+    navigate("/signin");
+  };
+  return (
+    <div className="flex justify-between px-6 py-4 border-b border-gray-300 relative">
+      <p className="text-2xl font-bold">Medium</p>
+      <div className="group relative cursor-pointer hover flex flex-col gap-1">
+        <Avatar name="Krrish" size="L" />
+        <button
+          onClick={handleClick}
+          className="absolute right-1 top-10 bg-gray-100 p-2 py-1 border border-gray-400 rounded hidden group-hover:block"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default Appbar;

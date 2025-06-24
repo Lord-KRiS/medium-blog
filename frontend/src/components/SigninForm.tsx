@@ -1,13 +1,30 @@
 import React, { useState } from "react";
 import InputBox from "./InputBox";
-import { Link } from "react-router-dom";
-import { type SigninInput, type SignupInput } from "@lordkris/medium-common";
+import { Link, useNavigate } from "react-router-dom";
+import { type SigninInput } from "@lordkris/medium-common";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
 
 function SigninForm() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<SigninInput>({
     email: "",
     password: "",
   });
+
+  const onSubmitHandler = async () => {
+    try {
+      const res = await axios.post(
+        `${BACKEND_URL}/api/v1/user/signin`,
+        formData
+      );
+      const token = res.data.token;
+      localStorage.setItem("token", token);
+      navigate("/blogs");
+    } catch (error) {
+      alert("Error while signing in " + error);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center ">
@@ -36,7 +53,10 @@ function SigninForm() {
             setFormData((c) => ({ ...c, password: e.target.value }))
           }
         />
-        <button className="bg-black text-white rounded p-2 font-medium text-lg">
+        <button
+          onClick={onSubmitHandler}
+          className="bg-black text-white rounded p-2 font-medium text-lg cursor-pointer"
+        >
           Sign In
         </button>
       </div>
