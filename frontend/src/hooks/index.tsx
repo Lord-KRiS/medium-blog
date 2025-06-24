@@ -6,12 +6,13 @@ interface Blog {
   title: string;
   content: string;
   id: string;
+  tag: string;
   author: {
     name: string;
   };
 }
 
-function useBlogs() {
+export function useBlogs() {
   const [loading, setLoading] = useState(true);
   const [blogs, setBlogs] = useState<Blog[]>([]);
 
@@ -27,4 +28,18 @@ function useBlogs() {
   return { loading, blogs };
 }
 
-export default useBlogs;
+export function useBlog({ id }: { id: string }) {
+  const [loading, setLoading] = useState(true);
+  const [blog, setBlog] = useState<Blog>();
+
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/api/v1/blog/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((res) => setBlog(res.data.blog))
+      .then(() => setLoading(false));
+  }, [id]);
+
+  return { loading, blog };
+}
