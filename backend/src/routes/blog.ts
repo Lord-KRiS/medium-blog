@@ -27,13 +27,14 @@ blogRouter.post("/", async (c) => {
 
     const { DATABASE_URL } = env(c);
     const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL });
-    const { title, content } = body;
+    const { title, content, tag } = body;
     const userId = c.get("userId");
     const blog = await prisma.blog.create({
       data: {
         authorId: userId,
         title,
         content,
+        tag,
       },
     });
     return c.json({ msg: "Blog post created" });
@@ -77,7 +78,17 @@ blogRouter.get("/bulk", async (c) => {
     const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL }).$extends(
       withAccelerate()
     );
-    const blogs = await prisma.blog.findMany();
+    const blogs = await prisma.blog.findMany({
+      select: {
+        title: true,
+        content: true,
+        id: true,
+        tag: true,
+        author: {
+          select: { name: true },
+        },
+      },
+    });
 
     return c.json({ msg: "Fetched all the blogs successfully", blogs });
   } catch (error) {

@@ -14,6 +14,7 @@ export const signinInput = zod.object({
 export const createBlogInput = zod.object({
   title: zod.string().min(1),
   content: zod.string().min(1),
+  tag: zod.string().min(1),
 });
 
 export const updateBlogInput = zod.object({
