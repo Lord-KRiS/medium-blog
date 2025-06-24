@@ -4,11 +4,11 @@ import SignupForm from "../components/SignupForm";
 
 function Signup() {
   return (
-    <div className="h-screen grid grid-cols-2">
-      <div className="col-span-2 md:col-span-1 flex justify-center">
+    <div className="h-screen grid grid-cols-1 lg:grid-cols-2">
+      <div className="flex justify-center">
         <SignupForm />
       </div>
-      <div className="hidden md:flex">
+      <div className="hidden lg:flex">
         <Quote />
       </div>
     </div>

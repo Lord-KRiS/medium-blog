@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+import LoginForm from "../components/SignupForm";
+import SigninForm from "../components/SigninForm";
 
 function Signin() {
   return (
-    <div>Signin</div>
-  )
+    <div className="flex items-center justify-center h-screen">
+      <SigninForm />
+    </div>
+  );
 }
 
-export default Signin
+export default Signin;
