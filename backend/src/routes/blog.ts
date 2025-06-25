@@ -128,3 +128,34 @@ blogRouter.get("/:id", async (c) => {
     );
   }
 });
+
+blogRouter.get("/tag/:tag", async (c) => {
+  try {
+    const tag = c.req.param("tag");
+    const { DATABASE_URL } = env(c);
+    const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL }).$extends(
+      withAccelerate()
+    );
+    const blogs = await prisma.blog.findMany({
+      where: {
+        tag,
+      },
+      select: {
+        title: true,
+        content: true,
+        id: true,
+        author: {
+          select: { name: true },
+        },
+      },
+    });
+
+    return c.json({ msg: "Retrieved the specific blogs", blogs });
+  } catch (error) {
+    console.log(error);
+    return c.json(
+      { msg: "Error occured in getting blog for specific tag", error },
+      404
+    );
+  }
+});
