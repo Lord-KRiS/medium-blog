@@ -144,6 +144,7 @@ blogRouter.get("/tag/:tag", async (c) => {
         title: true,
         content: true,
         id: true,
+        tag: true,
         author: {
           select: { name: true },
         },
