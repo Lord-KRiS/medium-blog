@@ -9,7 +9,9 @@ function Appbar() {
   };
   return (
     <div className="flex justify-between px-6 py-4 border-b border-gray-300 relative">
-      <p className="text-2xl font-bold">Medium</p>
+      <Link to="/blogs">
+        <p className="text-2xl font-bold">Medium</p>
+      </Link>
       <div className="flex gap-8">
         <Link
           to="/publish"
