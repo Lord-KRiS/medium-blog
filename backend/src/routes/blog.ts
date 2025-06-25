@@ -37,7 +37,7 @@ blogRouter.post("/", async (c) => {
         tag,
       },
     });
-    return c.json({ msg: "Blog post created" });
+    return c.json({ msg: "Blog post created", id: blog.id });
   } catch (error) {
     console.log(error);
     return c.json({ msg: "Error in post route of blog", error }, 404);
@@ -104,7 +104,18 @@ blogRouter.get("/:id", async (c) => {
     const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL }).$extends(
       withAccelerate()
     );
-    const blog = await prisma.blog.findUnique({ where: { id: blogId } });
+    const blog = await prisma.blog.findUnique({
+      where: { id: blogId },
+      select: {
+        title: true,
+        content: true,
+        id: true,
+        tag: true,
+        author: {
+          select: { name: true },
+        },
+      },
+    });
 
     if (!blog) return c.json({ msg: "Couldnt find blog" }, 404);
 

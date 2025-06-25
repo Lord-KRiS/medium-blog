@@ -1,6 +1,6 @@
 import React from "react";
 import Avatar from "./Avatar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Appbar() {
   const navigate = useNavigate();
@@ -11,14 +11,22 @@ function Appbar() {
   return (
     <div className="flex justify-between px-6 py-4 border-b border-gray-300 relative">
       <p className="text-2xl font-bold">Medium</p>
-      <div className="group relative cursor-pointer hover flex flex-col gap-1">
-        <Avatar name="Krrish" size="L" />
-        <button
-          onClick={handleClick}
-          className="absolute right-1 top-10 bg-gray-100 p-2 py-1 border border-gray-400 rounded hidden group-hover:block"
+      <div className="flex gap-8">
+        <Link
+          to="/publish"
+          className="bg-green-700 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full"
         >
-          Logout
-        </button>
+          New
+        </Link>
+        <div className="group relative cursor-pointer hover flex flex-col gap-1">
+          <Avatar name="Krrish" size="L" />
+          <button
+            onClick={handleClick}
+            className="absolute right-1 top-10 bg-gray-100 p-2 py-1 border border-gray-400 rounded hidden group-hover:block"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </div>
   );
