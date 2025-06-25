@@ -2,12 +2,22 @@ import React from "react";
 import BlogCard from "../components/BlogCard";
 import Appbar from "../components/Appbar";
 import { useBlogs } from "../hooks";
+import LoadingSkeleton from "../components/LoadingSkeleton";
 
 function Blogs() {
   const { loading, blogs } = useBlogs();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Appbar />
+        <div className="flex flex-col items-center">
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+        </div>
+      </div>
+    );
   }
 
   return (

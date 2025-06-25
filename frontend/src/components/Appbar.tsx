@@ -22,7 +22,7 @@ function Appbar() {
           <Avatar name="Krrish" size="L" />
           <button
             onClick={handleClick}
-            className="absolute right-1 top-10 bg-gray-100 p-2 py-1 border border-gray-400 rounded hidden group-hover:block"
+            className="absolute cursor-pointer right-1 top-10 bg-gray-100 p-2 py-1 border border-gray-400 rounded hidden group-hover:block"
           >
             Logout
           </button>
