@@ -24,16 +24,16 @@ function BlogCard({ id, name, date, title, content, tag }: blogType) {
         <p className="text-lg mb-10">{`${content.slice(0, 140)} ${
           content.length > 100 ? "..." : ""
         }`}</p>
-        <div className="flex gap-3 items-center">
+        <Link to={`/blog/tag/${tag}`} className="flex gap-3 items-center">
           <Tag tag={tag} />
           <p>{`${Math.ceil(content.length / 100)} min read`}</p>
-        </div>
+        </Link>
       </div>
     </Link>
   );
 }
 
-function Tag({ tag }: { tag: string }) {
+export function Tag({ tag }: { tag: string }) {
   return <div className="bg-gray-100 rounded-full px-2 py-1">{tag}</div>;
 }
 

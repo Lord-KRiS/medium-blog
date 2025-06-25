@@ -43,3 +43,19 @@ export function useBlog({ id }: { id: string }) {
 
   return { loading, blog };
 }
+
+export function useBlogsByTag({ tag }: { tag: string }) {
+  const [loading, setLoading] = useState(true);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URL}/api/v1/blog/tag/${tag}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((res) => setBlogs(res.data.blogs))
+      .then(() => setLoading(false));
+  }, [tag]);
+
+  return { loading, blogs };
+}
