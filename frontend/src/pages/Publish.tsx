@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import BackComponent from "../components/BackComponent";
 import type { CreateBlogInput } from "@lordkris/medium-common";
 import { Link, useNavigate } from "react-router-dom";

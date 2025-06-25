@@ -1,4 +1,3 @@
-import React from "react";
 import Avatar from "./Avatar";
 import type { Blog } from "../hooks";
 

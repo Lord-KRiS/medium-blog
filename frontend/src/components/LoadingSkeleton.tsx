@@ -1,5 +1,3 @@
-import React from "react";
-
 function LoadingSkeleton() {
   return (
     <div role="status" className="animate-pulse">

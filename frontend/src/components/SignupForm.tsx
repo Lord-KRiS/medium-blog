@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import InputBox from "./InputBox";
 import { Link, useNavigate } from "react-router-dom";
 import { type SignupInput } from "@lordkris/medium-common";

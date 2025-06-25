@@ -1,5 +1,3 @@
-import React from "react";
-
 function Quote() {
   return (
     <div className="flex flex-col gap-5 justify-center px-20 bg-gray-100">
