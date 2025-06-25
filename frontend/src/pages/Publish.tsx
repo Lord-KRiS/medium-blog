@@ -11,6 +11,12 @@ function Publish() {
     title: "",
     content: "",
     tag: "",
+    date: new Date().toLocaleDateString("en-US", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }),
   });
 
   const onClickHandler = async () => {

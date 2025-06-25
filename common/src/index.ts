@@ -15,6 +15,7 @@ export const createBlogInput = zod.object({
   title: zod.string().min(1),
   content: zod.string().min(1),
   tag: zod.string().min(1),
+  date: zod.string(),
 });
 
 export const updateBlogInput = zod.object({

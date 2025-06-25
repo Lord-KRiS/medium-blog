@@ -27,7 +27,7 @@ blogRouter.post("/", async (c) => {
 
     const { DATABASE_URL } = env(c);
     const prisma = new PrismaClient({ datasourceUrl: DATABASE_URL });
-    const { title, content, tag } = body;
+    const { title, content, tag, date } = body;
     const userId = c.get("userId");
     const blog = await prisma.blog.create({
       data: {
@@ -35,6 +35,7 @@ blogRouter.post("/", async (c) => {
         title,
         content,
         tag,
+        date,
       },
     });
     return c.json({ msg: "Blog post created", id: blog.id });
@@ -84,6 +85,7 @@ blogRouter.get("/bulk", async (c) => {
         content: true,
         id: true,
         tag: true,
+        date: true,
         author: {
           select: { name: true },
         },
@@ -111,6 +113,7 @@ blogRouter.get("/:id", async (c) => {
         content: true,
         id: true,
         tag: true,
+        date: true,
         author: {
           select: { name: true },
         },
@@ -145,6 +148,7 @@ blogRouter.get("/tag/:tag", async (c) => {
         content: true,
         id: true,
         tag: true,
+        date: true,
         author: {
           select: { name: true },
         },

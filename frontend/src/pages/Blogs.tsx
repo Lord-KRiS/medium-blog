@@ -27,7 +27,7 @@ function Blogs() {
           <BlogCard
             id={blog.id}
             name={blog.author.name}
-            date="24th June, 2025"
+            date={blog.date}
             title={blog.title}
             content={blog.content}
             tag={blog.tag}
